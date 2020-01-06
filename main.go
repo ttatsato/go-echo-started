@@ -1,12 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"net/http"
 )
 
 func main() {
 	e := echo.New()
+	e.Use(middleware.CORS())
+
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
@@ -20,14 +24,30 @@ func getUser(c echo.Context) error {
 	return c.String(http.StatusOK, "id is " + id)
 }
 
+
+type OrderParam struct {
+	Products []Product `json:products`
+}
+type Product struct {
+	Name string `json:"name"`
+	Price int `json:"price"`
+}
 /**
 curl -F "name=ハンバーグ" -F "price=1280" http://localhost:1323/order
  */
 func saveProduct(c echo.Context) error {
-	name := c.FormValue("name")
-	price := c.FormValue("price")
-	if price == "" {
-		return c.String(http.StatusBadRequest, "401")
+	param := new(OrderParam)
+	if err := c.Bind(param); err != nil {
+		return err
 	}
-	return c.String(http.StatusOK, "name:" + name + " price:" + price)
+	fmt.Println(param)
+	for key, product := range param.Products {
+		fmt.Print(key)
+		fmt.Print(": ")
+		fmt.Print(product.Name)
+		fmt.Print(", ")
+		fmt.Print(product.Price)
+		fmt.Println(" ")
+	}
+	return c.String(http.StatusOK, "name:")
 }
