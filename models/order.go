@@ -32,3 +32,11 @@ func ReadOrder() []Order {
 	mysqlConnection.Where("shop_id = ?", 133).Find(&orders)
 	return orders
 }
+
+func ReadOrderByUser() []Order {
+	var orders []Order
+	mysqlConnection := db.ConnectMySql()
+	mysqlConnection.Where("shop_id = ?", 133).Where("user_id = ?", 12).Find(&orders)
+	return orders
+}
+

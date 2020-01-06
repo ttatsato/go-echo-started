@@ -14,8 +14,6 @@ func ConnectMySql() *gorm.DB {
 	if err != nil {
 		fmt.Println("データベースへの接続に失敗しました")
 		panic("データベースへの接続に失敗しました")
-	} else {
-		fmt.Println("データベースへの接続に成功しました")
 	}
 	return db
 }

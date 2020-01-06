@@ -24,6 +24,9 @@ func main() {
 	e.GET("/order", func(context echo.Context) error {
 		return context.String(http.StatusOK, convertMapToJsonString(controllers.FetchOrder()))
 	})
+	e.GET("/order/:user_id", func(context echo.Context) error {
+		return context.String(http.StatusOK, convertMapToJsonString(controllers.FetchOrderHistory()))
+	})
 	e.POST("/order", controllers.MakeOrder)
 	migration()
 	e.Logger.Fatal(e.Start(":1323"))

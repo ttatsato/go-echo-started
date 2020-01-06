@@ -45,3 +45,8 @@ func MakeOrder(c echo.Context) error {
 func FetchOrder() []models.Order {
 	return models.ReadOrder()
 }
+
+func FetchOrderHistory() []models.Order {
+	return models.ReadOrderByUser()
+}
+
