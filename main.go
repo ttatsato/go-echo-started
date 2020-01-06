@@ -5,6 +5,8 @@ import (
 	"app/controllers"
 	"app/db"
 	"app/models"
+	"encoding/json"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -19,10 +21,12 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 	e.GET("/users/:id", getUser)
-	e.POST("/order", controllers.SaveProduct)
+	e.GET("/order", func(context echo.Context) error {
+		return context.String(http.StatusOK, convertMapToJsonString(controllers.FetchOrder()))
+	})
+	e.POST("/order", controllers.MakeOrder)
 	migration()
 	e.Logger.Fatal(e.Start(":1323"))
-
 }
 
 func getUser(c echo.Context) error {
@@ -34,4 +38,16 @@ func migration () {
 	mysqlConnection := db.ConnectMySql()
 	mysqlConnection.AutoMigrate(&models.Product{})
 	mysqlConnection.AutoMigrate(&models.Order{})
+}
+
+/**
+ * JSON文字列にして返す
+ */
+func convertMapToJsonString(src interface{}) string {
+	bytes, err := json.Marshal(src)
+	if err != nil {
+		fmt.Println("JSON marshal error: ", err)
+		return ""
+	}
+	return string(bytes)
 }

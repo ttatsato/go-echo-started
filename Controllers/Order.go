@@ -4,7 +4,6 @@ import (
 	"app/models"
 	"encoding/json"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -19,7 +18,7 @@ type Product struct {
 /**
  * オーダーを受け取りmySqlに格納する。
  */
-func SaveProduct(c echo.Context) error {
+func MakeOrder(c echo.Context) error {
 	param := new(OrderParam)
 	if err := c.Bind(param); err != nil {
 		return err
@@ -27,7 +26,6 @@ func SaveProduct(c echo.Context) error {
 	for _, product := range param.Products {
 		insertRecord := &models.Order{
 			Product: models.Product{
-				Model: gorm.Model{},
 				Name: product.Name,
 				Code:  "code",
 				Price: product.Price},
@@ -42,4 +40,8 @@ func SaveProduct(c echo.Context) error {
 		return nil
 	}
 	return c.String(http.StatusCreated, string(bytes))
+}
+
+func FetchOrder() []models.Order {
+	return models.ReadOrder()
 }

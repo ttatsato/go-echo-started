@@ -2,16 +2,15 @@ package models
 
 import (
 	"app/db"
-	"github.com/jinzhu/gorm"
 )
 
 type Order struct {
-	gorm.Model
-	UserId int `gorm:"default: 1"`
-	ShopId int `gorm:"default: 1"`
-	Product Product `gorm:"foreignkey:ProductRefer"`
-	ProductRefer uint
-	Memo string
+	GormModel
+	UserId int `gorm:"default: 1" json:"userId"`
+	ShopId int `gorm:"default: 1" json:"shopId"`
+	Product Product `gorm:"foreignkey:ProductRefer" json:"product"`
+	ProductRefer uint `json:"productRefer"`
+	Memo string `json:"memo"`
 }
 
 func CreateNewOrder (insertRecord *Order) error {
@@ -25,4 +24,11 @@ func CreateNewOrder (insertRecord *Order) error {
 
 	// nilを返すとコミットされます
 	return tx.Commit().Error
+}
+
+func ReadOrder() []Order {
+	var orders []Order
+	mysqlConnection := db.ConnectMySql()
+	mysqlConnection.Where("shop_id = ?", 133).Find(&orders)
+	return orders
 }

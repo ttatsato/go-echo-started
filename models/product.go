@@ -5,10 +5,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 type Product struct {
-	gorm.Model
-	Name string `gorm:"default:'product_name'"`
-	Code string
-	Price int
+	GormModel
+	Name string `gorm:"default:'product_name'" json:"name"`
+	Code string `json:"code"`
+	Price int `json:"price"`
 }
 
 func (p *Product) BeforeSave() (err error) {
