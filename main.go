@@ -32,8 +32,9 @@ type Product struct {
 	Name string `json:"name"`
 	Price int `json:"price"`
 }
+
 /**
-curl -F "name=ハンバーグ" -F "price=1280" http://localhost:1323/order
+ * オーダーを受け取る
  */
 func saveProduct(c echo.Context) error {
 	param := new(OrderParam)
