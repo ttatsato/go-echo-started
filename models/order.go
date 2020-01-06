@@ -11,6 +11,7 @@ type Order struct {
 	ShopId int `gorm:"default: 1"`
 	Product Product `gorm:"foreignkey:ProductRefer"`
 	ProductRefer uint
+	Memo string
 }
 
 func CreateNewOrder (insertRecord *Order) error {

@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"app/models"
+	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"net/http"
@@ -30,8 +32,14 @@ func SaveProduct(c echo.Context) error {
 				Code:  "code",
 				Price: product.Price},
 			UserId: 12,
-			ShopId: 133}
+			ShopId: 133,
+			Memo: "これはメモです"}
 		models.CreateNewOrder(insertRecord)
 	}
-	return c.String(http.StatusOK, "name:")
+	bytes, err := json.Marshal(param)
+	if err != nil {
+		fmt.Println("JSON marshal error: ", err)
+		return nil
+	}
+	return c.String(http.StatusCreated, string(bytes))
 }
