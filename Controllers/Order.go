@@ -1,7 +1,8 @@
-package Controllers
+package controllers
 
 import (
-	"fmt"
+	"app/models"
+	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -14,21 +15,23 @@ type Product struct {
 }
 
 /**
- * オーダーを受け取る
+ * オーダーを受け取りmySqlに格納する。
  */
 func SaveProduct(c echo.Context) error {
 	param := new(OrderParam)
 	if err := c.Bind(param); err != nil {
 		return err
 	}
-	fmt.Println(param)
-	for key, product := range param.Products {
-		fmt.Print(key)
-		fmt.Print(": ")
-		fmt.Print(product.Name)
-		fmt.Print(", ")
-		fmt.Print(product.Price)
-		fmt.Println(" ")
+	for _, product := range param.Products {
+		insertRecord := &models.Order{
+			Product: models.Product{
+				Model: gorm.Model{},
+				Name: product.Name,
+				Code:  "code",
+				Price: product.Price},
+			UserId: 12,
+			ShopId: 133}
+		models.CreateNewOrder(insertRecord)
 	}
 	return c.String(http.StatusOK, "name:")
 }
