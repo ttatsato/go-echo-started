@@ -8,7 +8,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/go-siris/siris v7.4.0+incompatible // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-isatty v0.0.11 // indirect
