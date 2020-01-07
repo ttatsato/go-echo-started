@@ -19,11 +19,6 @@ type OrderParam struct {
 	Product Product `json:product`
 	Memo string `json:memo`
 }
-type Product struct {
-	Id uint `json:"id"`
-	Name string `json:"name"`
-	Price int `json:"price"`
-}
 
 /**
  * オーダーを注文する

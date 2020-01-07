@@ -28,6 +28,8 @@ func main() {
 		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListCustomerOrderHistory()))
 	})
 	e.POST("/order", usecase.MakeOrder)
+
+	e.POST("/product/new", usecase.CreateNewProduct)
 	migrate()
 	e.Logger.Fatal(e.Start(":1323"))
 }
