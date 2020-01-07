@@ -36,7 +36,7 @@ func (r *OrderRepositoryImpl) GetByShopId(shopId int) ([]domain.Order, error) {
 
 func (r *OrderRepositoryImpl) GetByCustomerIdSortByCreatedAt(customerId int) ([]domain.Order, error) {
 	Order := []domain.Order{}
-	if err := r.Conn.Where("user_id = ?", customerId).Order("created_at desc").Limit(100).Find(&Order).Error; err != nil {
+	if err := r.Conn.Preload("Product").Where("user_id = ?", customerId).Order("created_at desc").Find(&Order).Error; err != nil {
 		return nil, err
 	}
 	return Order, nil
