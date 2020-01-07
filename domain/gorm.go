@@ -1,4 +1,4 @@
-package models
+package domain
 
 import "time"
 
@@ -9,5 +9,3 @@ type GormModel struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
 }
-
-
