@@ -1,5 +1,7 @@
 package domain
-
+type OrderSet struct {
+	OrderSet []Order
+}
 type Order struct {
 	GormModel
 	UserId int `gorm:"default: 1" json:"userId"`

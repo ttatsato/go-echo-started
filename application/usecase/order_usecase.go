@@ -7,12 +7,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo"
+	"log"
 	"net/http"
 )
+type OrderSet struct {
+	Order []OrderParam `json:order`
+}
 type OrderParam struct {
-	Products []Product `json:products`
+	UserId int `json:userId`
+	ShopId int `json:shopId`
+	Product Product `json:product`
+	Memo string `json:memo`
 }
 type Product struct {
+	Id uint `json:"id"`
 	Name string `json:"name"`
 	Price int `json:"price"`
 }
@@ -21,19 +29,18 @@ type Product struct {
  * オーダーを注文する
  */
 func MakeOrder(c echo.Context) error {
-	param := new(OrderParam)
+	param := new(OrderSet)
+	log.Println(param)
 	if err := c.Bind(param); err != nil {
 		return nil
 	}
-	for _, product := range param.Products {
+	for _, order := range param.Order {
+		log.Println(order)
 		insertRecord := &domain.Order{
-			Product: domain.Product{
-				Name:  product.Name,
-				Code:  "code",
-				Price: product.Price},
-			UserId: 12,
-			ShopId: 133,
-			Memo:   "これはメモです"}
+			ProductRefer: order.Product.Id,
+			UserId: order.UserId,
+			ShopId: order.ShopId,
+			Memo:  order.Memo}
 		conn, err := config.ConnectMySql()
 		if err != nil {
 			return nil
