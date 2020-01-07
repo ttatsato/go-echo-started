@@ -72,16 +72,15 @@ func ListShopOrder() []domain.Order {
 
 /**
  * 顧客の注文履歴を確認する
- * @TODO 引数に顧客IDを指定
  */
-func ListCustomerOrderHistory() []domain.Order {
+func ListCustomerOrderHistory(customerId int) []domain.Order {
 	conn, err := config.ConnectMySql()
 	if err != nil {
 		return nil
 	}
 	defer conn.Close()
 	repo := persistence.OrderRepositoryWithRDB(conn)
-	res, err := repo.GetByCustomerId(12)
+	res, err := repo.GetByCustomerIdSortByCreatedAt(customerId)
 	if err != nil {
 		return nil
 	}

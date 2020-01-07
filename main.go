@@ -25,8 +25,9 @@ func main() {
 	e.GET("/order", func(context echo.Context) error {
 		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListShopOrder()))
 	})
-	e.GET("/order/:customer_id", func(context echo.Context) error {
-		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListCustomerOrderHistory()))
+	e.GET("/order/:customerId", func(context echo.Context) error {
+		customerId, _ := strconv.Atoi(context.Param("customerId"))
+		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListCustomerOrderHistory(customerId)))
 	})
 	e.POST("/order", usecase.MakeOrder)
 

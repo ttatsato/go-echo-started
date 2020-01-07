@@ -34,7 +34,7 @@ func (r *ProductRepositoryImpl) GetByShopId(shopId int) ([]domain.Product, error
 	return Product, nil
 }
 
-func (r *ProductRepositoryImpl) GetByCustomerId(customerId int) ([]domain.Product, error) {
+func (r *ProductRepositoryImpl) GetByCustomerIdSortByCreatedAt(customerId int) ([]domain.Product, error) {
 	Product := []domain.Product{}
 	if err := r.Conn.Where("user_id = ?", customerId).Find(&Product).Error; err != nil {
 		return nil, err
