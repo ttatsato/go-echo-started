@@ -54,7 +54,6 @@ func (r *ProductRepositoryImpl) GetAll() ([]domain.Product, error) {
 
 // Save to add Product
 func (r *ProductRepositoryImpl) Save(Product *domain.Product) error {
-	log.Println("Save()")
 	if err := r.Conn.Save(&Product).Error; err != nil {
 		log.Println(err)
 		return err
@@ -64,9 +63,7 @@ func (r *ProductRepositoryImpl) Save(Product *domain.Product) error {
 }
 
 func (r *ProductRepositoryImpl) Create(Product *domain.Product) *domain.Product {
-	log.Println("Create()")
 	r.Conn.Create(&Product)
-	log.Println(Product)
 	return Product
 }
 

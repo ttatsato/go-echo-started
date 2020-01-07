@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -29,6 +30,10 @@ func main() {
 	})
 	e.POST("/order", usecase.MakeOrder)
 
+	e.GET("/product/:shopId", func(context echo.Context) error {
+		shopId, _ := strconv.Atoi(context.Param("shopId"))
+		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListShopProduct(shopId)))
+	})
 	e.POST("/product/new", usecase.CreateNewProduct)
 	migrate()
 	e.Logger.Fatal(e.Start(":1323"))
