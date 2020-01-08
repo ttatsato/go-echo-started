@@ -10,5 +10,6 @@ type Order struct {
 	Product Product `gorm:"foreignkey:ProductRefer" json:"product"`
 	ProductRefer uint `json:"productRefer"`
 	Memo string `json:"memo"`
-	Status string `gorm:"default:'未提供'" json:"status"`
+	OrderStatus OrderStatusMaster `gorm:"foreignkey:OrderStatusRefer" json:"orderStatus"`
+	OrderStatusRefer uint `gorm:"defualt:1" json:"orderStatusRefer"`
 }

@@ -7,7 +7,7 @@ type OrderRepository interface {
 	GetByShopId(shopId int) ([]domain.Order, error)
 	GetByCustomerIdSortByCreatedAt(CustomerId int) ([]domain.Order, error)
 	GetAll() ([]domain.Order, error)
-	Save(*domain.Order) error
+	Save(domain.Order) error
 	Remove(id int) error
 	//Update(*domain.Order) error
 }

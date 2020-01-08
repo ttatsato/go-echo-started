@@ -28,7 +28,7 @@ func (r *OrderRepositoryImpl) Get(id int) (*domain.Order, error) {
 
 func (r *OrderRepositoryImpl) GetByShopId(shopId int) ([]domain.Order, error) {
 	Order := []domain.Order{}
-	if err := r.Conn.Preload("Product").Where("shop_id = ?", shopId).Order("created_at desc").Find(&Order).Error; err != nil {
+	if err := r.Conn.Preload("Product").Preload("OrderStatus").Where("shop_id = ?", shopId).Order("created_at desc").Find(&Order).Error; err != nil {
 		return nil, err
 	}
 	return Order, nil
@@ -36,7 +36,7 @@ func (r *OrderRepositoryImpl) GetByShopId(shopId int) ([]domain.Order, error) {
 
 func (r *OrderRepositoryImpl) GetByCustomerIdSortByCreatedAt(customerId int) ([]domain.Order, error) {
 	Order := []domain.Order{}
-	if err := r.Conn.Preload("Product").Where("user_id = ?", customerId).Order("created_at desc").Find(&Order).Error; err != nil {
+	if err := r.Conn.Preload("Product").Preload("OrderStatus").Where("user_id = ?", customerId).Order("created_at desc").Find(&Order).Error; err != nil {
 		return nil, err
 	}
 	return Order, nil
@@ -53,7 +53,7 @@ func (r *OrderRepositoryImpl) GetAll() ([]domain.Order, error) {
 }
 
 // Save to add Order
-func (r *OrderRepositoryImpl) Save(Order *domain.Order) error {
+func (r *OrderRepositoryImpl) Save(Order domain.Order) error {
 	if err := r.Conn.Save(&Order).Error; err != nil {
 		log.Println(err)
 		return err
@@ -81,7 +81,6 @@ func (r *OrderRepositoryImpl) Remove(id int) error {
 		return err
 	}
 
-	Order.Status = "deleted"
 	if err := tx.Save(&Order).Error; err != nil {
 		tx.Rollback()
 		return err

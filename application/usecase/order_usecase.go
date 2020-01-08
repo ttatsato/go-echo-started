@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo"
+	"log"
 	"net/http"
 )
 type OrderSet struct {
@@ -19,15 +20,11 @@ type OrderSet struct {
 func MakeOrder(c echo.Context) error {
 	param := new(OrderSet)
 	if err := c.Bind(param); err != nil {
-		return nil
+		log.Println("bad request")
+		return c.String(http.StatusBadRequest, "bad request")
 	}
 	for _, order := range param.Order {
-		insertRecord := &domain.Order{
-			ProductRefer: order.Product.ID,
-			UserId: order.UserId,
-			ShopId: order.ShopId,
-			Code: order.Code,
-			Memo:  order.Memo}
+		insertRecord := order
 		conn, err := config.ConnectMySql()
 		if err != nil {
 			return nil
