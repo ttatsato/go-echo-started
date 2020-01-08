@@ -22,6 +22,10 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 	e.GET("/users/:id", getUser)
+	e.GET("/shop/:shopId", func(context echo.Context) error {
+		shopId, _ := strconv.Atoi(context.Param("shopId"))
+		return context.String(http.StatusOK, convertMapToJsonString(usecase.FetchShopInfo(shopId)))
+	})
 	e.GET("/order", func(context echo.Context) error {
 		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListShopOrder()))
 	})
@@ -30,7 +34,6 @@ func main() {
 		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListCustomerOrderHistory(customerId)))
 	})
 	e.POST("/order", usecase.MakeOrder)
-
 	e.GET("/product/:shopId", func(context echo.Context) error {
 		shopId, _ := strconv.Atoi(context.Param("shopId"))
 		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListShopProduct(shopId)))

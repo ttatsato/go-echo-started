@@ -13,7 +13,8 @@ func Migrate() (*gorm.DB, error) {
 	}
 	defer conn.Close()
 
-	conn.AutoMigrate(&domain.Product{}, &domain.Order{})
+	conn.AutoMigrate(&domain.Product{}, &domain.Order{}, &domain.Shop{})
+	conn.Create( &domain.Shop{Name: "テストショップ 本店", Domain: "test-shop-honten"})
 	log.Println("Migration has been processed")
 	return conn, nil
 }
