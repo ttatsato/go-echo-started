@@ -7,17 +7,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo"
-	"log"
 	"net/http"
 )
 type OrderSet struct {
-	Order []OrderParam `json:order`
-}
-type OrderParam struct {
-	UserId int `json:userId`
-	ShopId int `json:shopId`
-	Product Product `json:product`
-	Memo string `json:memo`
+	Order []domain.Order `json:order`
 }
 
 /**
@@ -25,16 +18,15 @@ type OrderParam struct {
  */
 func MakeOrder(c echo.Context) error {
 	param := new(OrderSet)
-	log.Println(param)
 	if err := c.Bind(param); err != nil {
 		return nil
 	}
 	for _, order := range param.Order {
-		log.Println(order)
 		insertRecord := &domain.Order{
-			ProductRefer: order.Product.Id,
+			ProductRefer: order.Product.ID,
 			UserId: order.UserId,
 			ShopId: order.ShopId,
+			Code: order.Code,
 			Memo:  order.Memo}
 		conn, err := config.ConnectMySql()
 		if err != nil {
@@ -56,14 +48,14 @@ func MakeOrder(c echo.Context) error {
  * ショップのオーダーを一覧確認する
  * TODO 引数にショップIDを指定
  */
-func ListShopOrder() []domain.Order {
+func ListShopOrder(shopId int) []domain.Order {
 	conn, err := config.ConnectMySql()
 	if err != nil {
 		return nil
 	}
 	defer conn.Close()
 	repo := persistence.OrderRepositoryWithRDB(conn)
-	res, err := repo.GetByShopId(133)
+	res, err := repo.GetByShopId(shopId)
 	if err != nil {
 		return nil
 	}

@@ -28,7 +28,7 @@ func (r *OrderRepositoryImpl) Get(id int) (*domain.Order, error) {
 
 func (r *OrderRepositoryImpl) GetByShopId(shopId int) ([]domain.Order, error) {
 	Order := []domain.Order{}
-	if err := r.Conn.Where("shop_id = ?", shopId).Find(&Order).Error; err != nil {
+	if err := r.Conn.Preload("Product").Where("shop_id = ?", shopId).Order("created_at desc").Find(&Order).Error; err != nil {
 		return nil, err
 	}
 	return Order, nil
@@ -54,7 +54,6 @@ func (r *OrderRepositoryImpl) GetAll() ([]domain.Order, error) {
 
 // Save to add Order
 func (r *OrderRepositoryImpl) Save(Order *domain.Order) error {
-	log.Println("Save()")
 	if err := r.Conn.Save(&Order).Error; err != nil {
 		log.Println(err)
 		return err

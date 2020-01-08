@@ -26,8 +26,9 @@ func main() {
 		shopId, _ := strconv.Atoi(context.Param("shopId"))
 		return context.String(http.StatusOK, convertMapToJsonString(usecase.FetchShopInfo(shopId)))
 	})
-	e.GET("/order", func(context echo.Context) error {
-		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListShopOrder()))
+	e.GET("/shop/order/:shopId", func(context echo.Context) error {
+		shopId, _ := strconv.Atoi(context.Param("shopId"))
+		return context.String(http.StatusOK, convertMapToJsonString(usecase.ListShopOrder(shopId)))
 	})
 	e.GET("/order/:customerId", func(context echo.Context) error {
 		customerId, _ := strconv.Atoi(context.Param("customerId"))

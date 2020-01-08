@@ -11,15 +11,8 @@ import (
 	"net/http"
 )
 
-type Product struct {
-	Id uint `json:"id"`
-	ShopId int `json:"shopId"`
-	Name string `json:"name"`
-	Price int `json:"price"`
-}
-
 func CreateNewProduct (c echo.Context) error {
-	param := new(Product)
+	param := new(domain.Product)
 	if err := c.Bind(param); err != nil {
 		log.Println("bad request")
 		bytes, err := json.Marshal(param)
