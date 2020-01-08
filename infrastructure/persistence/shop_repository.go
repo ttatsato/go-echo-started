@@ -17,12 +17,12 @@ func ShopRepositoryWithRDB(conn *gorm.DB) repository.ShopRepository {
 	return &ShopRepositoryImpl{Conn: conn}
 }
 
-func (r *ShopRepositoryImpl) GetByShopId(shopId int) ([]domain.Shop, error) {
-	Shop := []domain.Shop{}
-	if err := r.Conn.Where("id = ?", shopId).Find(&Shop).Error; err != nil {
-		return nil, err
+func (r *ShopRepositoryImpl) GetByShopId(shopId int) domain.Shop {
+	Shop := domain.Shop{}
+	if err := r.Conn.Where("id = ?", shopId).First(&Shop).Error; err != nil {
+		return domain.Shop{}
 	}
-	return Shop, nil
+	return Shop
 }
 
 // Save to add Shop

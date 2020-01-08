@@ -41,17 +41,14 @@ type Shop struct {
 /**
  * ショップ情報を取得する
  */
-func FetchShopInfo(shopId int) []domain.Shop {
+func FetchShopInfo(shopId int) domain.Shop {
 	conn, err := config.ConnectMySql()
 	if err != nil {
-		return nil
+		return domain.Shop{}
 	}
 	defer conn.Close()
 	repo := persistence.ShopRepositoryWithRDB(conn)
-	res, err := repo.GetByShopId(shopId)
-	if err != nil {
-		return nil
-	}
+	res := repo.GetByShopId(shopId)
 	return res
 }
 
